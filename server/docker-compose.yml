@@ -9,5 +9,5 @@ services:
       ports:
        - "80:80"
       volumes:
-        - ../jsPsych/:/usr/share/nginx/html/jsPsych/
+        - ../jsPsych/:/usr/share/nginx/html/jspsych/
         - ../client/:/usr/share/nginx/html/sternberg-task/

@@ -16,7 +16,7 @@
 			date: new Date().toISOString()
 		});
 		var req = new XMLHttpRequest();
-		req.open("POST", 'http://localhost/experiment-results/');
+		req.open("POST", '/experiment-results/');
 		req.setRequestHeader("Content-type", "application/json");
 		req.send(body);
 		document.body.innerHTML = "Thank you very much for participating!";
