@@ -1,0 +1,13 @@
+version: "3"
+services:
+    db:
+      image: couchdb
+      ports:
+       - "5984:5984"
+    nginx:
+      build: nginx
+      ports:
+       - "80:80"
+      volumes:
+        - ../jspsych/:/usr/share/nginx/html/jspsych/
+        - ../client/:/usr/share/nginx/html/sternberg-task/

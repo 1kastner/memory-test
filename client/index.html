@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src="jspsych/jspsych.js"></script>
+	<script src="jspsych/plugins/jspsych-html-keyboard-response.js"></script>
+	<link rel="stylesheet" href="jspsych/css/jspsych.css"></link>
+</head>
+<body></body>
+
+<script>
+
+	var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	
+	function createList() {
+		var list = [];	
+		var maxLength = 6;
+		var desiredListLength = Math.floor(Math.random() * maxLength) + 1
+
+		while (list.length < maxLength) {
+			var charToAdd = possible.charAt(Math.floor(Math.random() * possible.length));
+			if (!list.includes(charToAdd)) {
+				list.push(charToAdd);
+			}
+		}
+		return list;
+	}
+	
+	function generateTrial() {
+		var list = createList();
+		var isPositiveTrial = (Math.random() < 0.7);
+		if (isPositiveTrial) {
+			var target = list[Math.floor(Math.random() * list.length)];
+		}
+		else {
+			var notInList = [...possible].filter(x => list.indexOf(x) == -1);
+			var target = notInList[Math.floor(Math.random() * notInList.length)];
+		}
+		return [
+			{
+				type: 'html-keyboard-response',
+				stimulus: list.join("     "),
+				choices: jsPsych.NO_KEYS,
+				timing_response: 500
+			},
+			{
+				type: 'html-keyboard-response',
+				prompt: "If the item was presented in the list, press 'f', otherwise press 'j'.",
+				choices: ["f", "j"],
+				data: {
+					isPositive: isPositiveTrial
+				}
+			}
+		];
+	}
+	
+	var timeline = [];
+	for (var i = 0; i < 10; i++) {
+		var trial = generateTrial();
+		timeline.push(trial[0]);
+		timeline.push(trial[1]);
+	}
+
+	
+	jsPsych.init({
+		timeline: timeline,
+		on_finish: function() {
+			var body = JSON.stringify({
+				experimentData: JSON.parse(jsPsych.data.get().json()),
+				date: new Date().toISOString()
+			});
+			console.log(body);
+			var req = new XMLHttpRequest();
+			req.open("POST", 'http://localhost/experiment-results/');
+			req.setRequestHeader("Content-type", "application/json");
+			req.send(body);
+			document.body.innerHTML = "Thank you very much for participating!";
+		},
+		default_iti: 250
+	});
+</script>
+</html>
