@@ -7,6 +7,13 @@ As you can see this project has https://github.com/jspsych/jsPsych as a submodul
 At the time of writing no npm or bower package is available, therefore this seems to be the easiest solution.
 Please have a look at the project yourself regarding license issues, accredition etc.
 
+To make git write the jsPsych code to the hard drive, the submodule must be explicitely initialised and updated, i.e.
+```
+git submodule init 
+git submodule update
+```
+
+
 # the docker / couchdb setup
 I wanted to provide a simple solution for saving the data from the experiment.
 Within the jsPsych project at the time of writing there are some solution sketches but no server included.
