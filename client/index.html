@@ -11,6 +11,12 @@
 <script>
 
 	function saveToCouchDb() {
+        /* create document storage if not yet existent */
+        var req = new XMLHttpRequest();
+        req.open("PUT", '/experiment-results/');
+        req.send();
+        
+        /* save data */
 		var body = JSON.stringify({
 			experimentData: JSON.parse(jsPsych.data.get().json()),
 			date: new Date().toISOString()
